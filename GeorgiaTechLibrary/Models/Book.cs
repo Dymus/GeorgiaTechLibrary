@@ -8,9 +8,7 @@ namespace GeorgiaTechLibrary.Models
         public string ISBN { get; set; } = null!;
         public string Title { get; set; } = null!;
         public string? Description { get; set; }
-
         public ICollection<Volume>? Volumes { get; set; }
-
         public ICollection<Author>? Authors { get; set; }
         public  ICollection<Subject>? Subjects { get; set; }
     }

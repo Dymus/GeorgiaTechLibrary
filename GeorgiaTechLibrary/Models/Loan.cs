@@ -8,7 +8,8 @@ namespace GeorgiaTechLibrary.Models
     public partial class Loan
     {
         public int LoanId { get; set; }
-        public byte[] StartDateTime { get; set; } = null!;
-        public ICollection<LoanLine>? LoanLines { get; set; }
+        public DateTime StartDateTime { get; set; }
+        public DateTime EndDateTime { get; set; } 
+        public Volume volume { get; set; } 
     }
 }

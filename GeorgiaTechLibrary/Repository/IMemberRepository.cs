@@ -7,5 +7,7 @@ namespace GeorgiaTechLibrary.Repository
         Task<IEnumerable<Member>> GetMembers();
 
         Task<Member> GetMember(string SSN);
+
+        Task<Member> CreateMember(Member member);
     }
 }

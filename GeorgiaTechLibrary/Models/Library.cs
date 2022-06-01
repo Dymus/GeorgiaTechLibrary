@@ -10,7 +10,7 @@ namespace GeorgiaTechLibrary.Models
         public int LocationId { get; set; }
 
         public Location Location { get; set; } = null!;
-        public ICollection<Member>? Members { get; set; }
-        public ICollection<Volume>? Volumes { get; set; }
+        //public ICollection<Member>? Members { get; set; }
+        //public ICollection<Volume>? Volumes { get; set; }
     }
 }

@@ -14,5 +14,7 @@ namespace GeorgiaTechLibrary.Business
         public Task<IEnumerable<Member>> GetMembers() => _memberRepository.GetMembers();
 
         public Task<Member> GetMember(string SSN) => _memberRepository.GetMember(SSN);
+
+        public Task<Member> CreateMember(Member member) => _memberRepository.CreateMember(member);
     }
 }

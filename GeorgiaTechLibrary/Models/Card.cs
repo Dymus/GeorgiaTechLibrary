@@ -6,6 +6,6 @@ namespace GeorgiaTechLibrary.Models
     public class Card
     {
         public string SSN { get; set; } = null!;
-        public byte[] ExpirationDate { get; set; } = null!;
+        public DateTime ExpirationDate { get; set; }
     }
 }
