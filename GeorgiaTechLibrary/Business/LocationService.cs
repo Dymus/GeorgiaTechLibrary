@@ -3,10 +3,10 @@ using GeorgiaTechLibrary.Repository;
 
 namespace GeorgiaTechLibrary.Business
 {
-    public class LocationManagement
+    public class LocationService
     {
         private readonly ILocationRepository _locationRepository;
-        public LocationManagement(ILocationRepository locationRepository)
+        public LocationService(ILocationRepository locationRepository)
         {
             _locationRepository = locationRepository;
         }

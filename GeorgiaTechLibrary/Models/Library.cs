@@ -5,9 +5,9 @@ namespace GeorgiaTechLibrary.Models
 {
     public class Library
     {
-        public int LibraryId { get; set; }
+        public int Library_id { get; set; }
         public string Name { get; set; } = null!;
-        public int LocationId { get; set; }
+        public int Location_id { get; set; }
 
         public Location Location { get; set; } = null!;
         //public ICollection<Member>? Members { get; set; }

@@ -8,15 +8,15 @@ namespace GeorgiaTechLibrary.Controllers
     public class MemberController : ControllerBase
     {
 
-        private readonly MemberManagement _memberManagement;
-        private readonly LocationManagement _locationManagement;
-        private readonly LibraryManagement _libraryManagement;
+        private readonly MemberService _memberManagement;
+        private readonly LocationService _locationManagement;
+        private readonly LibraryService _libraryManagement;
 
         public MemberController(IMemberRepository memberRepository, ILocationRepository locationRepository, ILibraryRepository libraryRepository)
         {
-            _memberManagement = new MemberManagement(memberRepository);
-            _locationManagement = new LocationManagement(locationRepository);
-            _libraryManagement = new LibraryManagement(libraryRepository);
+            _memberManagement = new MemberService(memberRepository);
+            _locationManagement = new LocationService(locationRepository);
+            _libraryManagement = new LibraryService(libraryRepository);
         }
 
         [HttpGet]
@@ -62,24 +62,27 @@ namespace GeorgiaTechLibrary.Controllers
         [ProducesResponseType(typeof(Member), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces("application/json", "text/plain", "text/json")]
-        public async Task<IActionResult> CreateMember([FromBody] MemberDTO memberDTO)
+        public async Task<ActionResult<Member>> CreateMember([FromBody] MemberDTO memberDTO)
         {
             try
             {
-                Member member = new();
-                member.SSN = memberDTO.SSN;
+                var res = 0;
+                var newMember = new Member();
+                var campusLocation = await _locationManagement.GetLocation(memberDTO.Campus_location_id.ToString());
 
-                var campusLocation = await _locationManagement.GetLocation(memberDTO.CampusLocation.ToString());
-                if (campusLocation != null) member.CampusLocation = campusLocation;
+                var homeLocation = await _locationManagement.GetLocation(memberDTO.Home_location_id.ToString());
 
-                var homeLocation = await _locationManagement.GetLocation(memberDTO.HomeLocation.ToString());
-                if (homeLocation != null) member.HomeLocation = homeLocation;
+                var library = await _libraryManagement.GetLibrary(memberDTO.Library_id.ToString());
 
-                var library = await _libraryManagement.GetLibrary(memberDTO.Library.ToString());
-                if (library != null) member.Library = library;
+                if (campusLocation!=null && homeLocation!=null && library != null) 
+                    res = await _memberManagement.CreateMember(memberDTO);
 
-                var newMember = await _memberManagement.CreateMember(member);
-                return Created("Created new member",newMember);
+                if (res > 0)
+                {
+                    newMember = await _memberManagement.GetMember(memberDTO.SSN);
+                    return Created("Created new member", newMember);
+                }
+                else return BadRequest();
             }
             catch (Exception ex)
             {

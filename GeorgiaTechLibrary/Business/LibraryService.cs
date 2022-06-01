@@ -3,10 +3,10 @@ using GeorgiaTechLibrary.Repository;
 
 namespace GeorgiaTechLibrary.Business
 {
-    public class LibraryManagement
+    public class LibraryService
     {
         private readonly ILibraryRepository _libraryRepository;
-        public LibraryManagement(ILibraryRepository libraryRepository)
+        public LibraryService(ILibraryRepository libraryRepository)
         {
             _libraryRepository = libraryRepository;
         }

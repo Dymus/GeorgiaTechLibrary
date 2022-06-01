@@ -7,11 +7,11 @@ namespace GeorgiaTechLibrary.Controllers
 {
     public class LibraryController : ControllerBase
     {
-        private readonly LibraryManagement _libraryManagement;
+        private readonly LibraryService _libraryManagement;
 
         public LibraryController(ILibraryRepository libraryRepository)
         {
-            _libraryManagement = new LibraryManagement(libraryRepository);
+            _libraryManagement = new LibraryService(libraryRepository);
         }
 
         [HttpGet]

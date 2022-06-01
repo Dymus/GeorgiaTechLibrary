@@ -7,11 +7,11 @@ namespace GeorgiaTechLibrary.Controllers
 {
     public class LocationController : ControllerBase
     {
-        private readonly LocationManagement _locationManagement;
+        private readonly LocationService _locationManagement;
 
         public LocationController(ILocationRepository locationRepository)
         {
-            _locationManagement = new LocationManagement(locationRepository);
+            _locationManagement = new LocationService(locationRepository);
         }
 
         [HttpGet]

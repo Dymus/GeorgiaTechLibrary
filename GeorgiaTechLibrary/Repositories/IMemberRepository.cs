@@ -8,6 +8,8 @@ namespace GeorgiaTechLibrary.Repository
 
         Task<Member> GetMember(string SSN);
 
-        Task<Member> CreateMember(Member member);
+        Task<int> CreateMember(MemberDTO member);
+
+        Task<bool> MemberCanLoan(string SSN);
     }
 }
