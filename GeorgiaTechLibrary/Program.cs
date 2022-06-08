@@ -9,6 +9,8 @@ builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<ILibraryRepository, LibraryRepository>();
+builder.Services.AddScoped<IVolumeRepository, VolumeRepository>();
+//builder.Services.AddScoped<IBookRepository>, BookRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

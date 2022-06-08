@@ -25,7 +25,7 @@ namespace GeorgiaTechLibrary.Repository
         //}
         public async Task<Location> GetLocation(string locationId)
         {
-            var query = "SELECT location_id, post_code, street, street_num FROM location WHERE location_id=@locationId";
+            var query = "SELECT l.location_id, l.post_code, l.street, l.street_num, pcc.city FROM location l JOIN post_code_city pcc ON l.post_code=pcc.post_code WHERE location_id=@locationId";
             //var query = "SELECT location_id LocationId, post_code PostCode, street, street_num streetNum FROM location WHERE location_id=@locationId";
             using (var connection = _context.CreateConnection())
             {

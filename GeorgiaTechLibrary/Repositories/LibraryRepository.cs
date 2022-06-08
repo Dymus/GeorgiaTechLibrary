@@ -16,7 +16,7 @@ namespace GeorgiaTechLibrary.Repository
 
         public async Task<Library> GetLibrary(string libraryId)
         {
-            var query = "SELECT * FROM library l JOIN location loc ON loc.location_id=l.location_id WHERE l.library_id=@libraryId";
+            var query = "SELECT l.library_id, l.name, loc.location_id, loc.post_code, pcc.city, loc.street, loc.street_num  FROM library l JOIN location loc ON loc.location_id=l.location_id JOIN post_code_city pcc ON pcc.post_code=loc.post_code WHERE l.library_id=@libraryId";
             
             using (var connection = _context.CreateConnection())
             {

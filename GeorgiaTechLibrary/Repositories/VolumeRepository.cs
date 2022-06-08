@@ -20,36 +20,60 @@ namespace GeorgiaTechLibrary.Repository
 
         public async Task<Volume> GetVolume(string volumeId)
         {
-            var query = "SELECT * FROM volume WHERE volume_id=@volumeId";
+            var query = "SELECT v.volume_id, v.isbn, v.is_available, v.library_id, l.name, l.location_id, loc.post_code, pcc.city, loc.street, loc.street_num FROM volume v JOIN library l ON v.library_id = l.library_id JOIN location loc ON l.location_id = loc.location_id JOIN post_code_city pcc ON loc.post_code = pcc.post_code WHERE volume_id = @volumeId";
             using (var connection = _context.CreateConnection())
             {
-                var volume = await connection.QuerySingleOrDefaultAsync<Volume>(query, new { volumeId });
-                return volume;
+                var volume = await connection.QueryAsync<Volume, Library, Volume>(query, map:(volume, library) =>
+                {
+                    volume.Library = library;
+                    return volume;
+                },
+                new { volumeId },
+                splitOn: "library_id");
+                return volume.First();
             }
         }
 
-        public async Task<IEnumerable<Volume>> GetVolumes(string ISBN)
+        //returns all volumes for a book
+        public async Task<IEnumerable<Volume>> GetAllVolumes(string ISBN)
         {
-            var query = "SELECT * FROM volume WHERE isbn=@ISBN";
+            var query = "SELECT v.volume_id, v.isbn, v.is_available, v.library_id, l.name, l.location_id, loc.post_code, pcc.city, loc.street, loc.street_num FROM volume v JOIN library l ON v.library_id=l.library_id JOIN location loc ON l.location_id=loc.location_id JOIN post_code_city pcc ON loc.post_code=pcc.post_code WHERE isbn=@ISBN";
 
             using(var connection = _context.CreateConnection())
             {
-                var volumes = await connection.QueryAsync<Volume>(query, new { ISBN });
+                var volumes = await connection.QueryAsync<Volume, Library, Volume>
+                    (query, map:(volume, library) =>
+                    {
+                        volume.Library = library;
+                        return volume;
+                    },
+                    new { ISBN },
+                    splitOn: "library_id");
                 return volumes.ToList();
             }
         }
 
+        //returns all available volumes for a book
         public async Task<IEnumerable<Volume>> GetAvailableVolumes(string ISBN)
         {
-            var query = "SELECT * FROM volume WHERE isbn=@ISBN AND is_available=1";
+            var query = "SELECT v.volume_id, v.isbn, v.is_available, v.library_id, l.name, l.location_id, loc.post_code, pcc.city, loc.street, loc.street_num FROM volume v JOIN library l ON v.library_id=l.library_id JOIN location loc ON l.location_id=loc.location_id JOIN post_code_city pcc ON loc.post_code=pcc.post_code WHERE isbn=@ISBN AND is_available=1";
 
             using (var connection = _context.CreateConnection())
             {
-                var volumes = await connection.QueryAsync<Volume>(query, new { ISBN });
+                var volumes = await connection.QueryAsync<Volume, Library, Volume>
+                    (query, map:(volume, library) =>
+                    {
+                        volume.Library = library;
+                        return volume;
+                    },
+                    new { ISBN },
+                    splitOn: "library_id");
                 return volumes.ToList();
             }
         }
 
+        //returns a single available volume for a book
+        //TODO: still does not work with a stored procedure
         public async Task<Volume> GetAvailableVolume(string ISBN)
         {
             var query = "EXEC GetAvailableVolume @ISBN";
