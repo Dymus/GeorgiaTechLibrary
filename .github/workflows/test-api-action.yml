@@ -19,16 +19,16 @@ jobs:
         ports:
           - "1433:1433"
     steps:
+      #Checkout the repository
+      - name: Checkout respository
+        uses: actions/checkout@master 
+
       #Run SQL Scripts to generate database, tables, constraints, triggers and stored procedures
       - name: Setup GTL Database
         uses: azure/sql-action@v1.3
         with: 
           connection-string: ${{ secrets.CONN_STRING }}
           dacpac-package: './GeorgiaTechLibrary.dacpac'
-
-      #Checkout the repository
-      - name: Checkout respository
-        uses: actions/checkout@master 
 
       #Set up the .NET CLI environment 
       - name: Setup .NET
