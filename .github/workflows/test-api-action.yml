@@ -19,11 +19,6 @@ jobs:
         ports:
           - "1433:1433"
     steps:
-
-      - name: List SQL Server name
-        run: |
-          SQLCMD -L
-      
       #Run SQL Scripts to generate database, tables, constraints, triggers and stored procedures
       - name: Setup GTL Database
         uses: azure/sql-action@v1.3
