@@ -24,8 +24,8 @@ jobs:
       - name: Setup GTL Database
         uses: azure/sql-action@v1.3
         with: 
-        connection-string: {{secrets.CONN_STRING }}
-        dacpac-package: './GeorgiaTechLibrary.dacpac'
+          connection-string: {{secrets.CONN_STRING }}
+          dacpac-package: './GeorgiaTechLibrary.dacpac'
 
       #Checkout the repository
       - name: Checkout respository
