@@ -1,0 +1,66 @@
+#Name of the GitHub Action
+name: Postman push build
+
+#Set the action on which the workflow will trigger
+on:
+  push:
+    branches: [main]
+
+env:
+  DOTNET_VERSION: '6.0.x'
+
+jobs: 
+  test-api:
+    runs-on: ubuntu-latest
+    services:
+      sql.data:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        env: 
+          SA_PASSWORD: ${{ secrets.SQL_PASSWD }}
+          ACCEPT_EULA: Y
+        ports:
+          - "1433:1433"
+    steps:
+      #Checkout the repository
+      - name: Checkout respository
+        uses: actions/checkout@master 
+
+      #Set up the .NET CLI environment 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env. DOTNET_VERSION }}
+       
+      #Restore the dependencies and tools of a solution
+      - name: Install dependencies
+        run: dotnet restore
+      
+      - name: Build solution
+        run: dotnet build --configuration Release --no-restore
+
+      #Install Node.js for Newman 
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      
+      # Install Postman collection runner (Newman)
+      - name: Install Newman
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+      
+      # # Run the Postman collection
+      # - name: Run Postman collection
+      #   run: |
+      #     newman run ./GeorgiaTechLibraryTests/gtl-api-collection.json -e ./GeorgiaTechLibraryTests/gtl-api-env.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme > testResults/runreport1.html
+
+      # # Upload the contents of the Test Results directory to workspace
+      # - name: Output the run details
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: RunReports
+      #     path: testResults
+
+
+
