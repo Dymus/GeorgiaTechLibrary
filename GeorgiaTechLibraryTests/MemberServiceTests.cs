@@ -15,7 +15,6 @@ namespace GeorgiaTechLibraryTests
         public MemberServiceTests()
         {
             _memberService = new MemberService(_memberRepoMock.Object);
-            _loanService = new LoanService(_loanRepoMock.Object);
         }
 
         [Fact]
@@ -56,8 +55,8 @@ namespace GeorgiaTechLibraryTests
             var canMemberLoan = false;
 
             var SSN = "000-00-1765";
+            //_loanRepoMock.Setup(x => x.GetNumberOfActiveLoans(SSN)).ReturnsAsync(() => 3);
             //var SSN = It.IsAny<string>();
-
 
             //Act
             activeLoans = await _loanService.GetNumberOfActiveLoans(SSN);
@@ -65,13 +64,11 @@ namespace GeorgiaTechLibraryTests
             else canMemberLoan = false;
 
             var result = await _memberService.MemberCanLoan(SSN);
+
             //Assert
             Assert.Equal(canMemberLoan, result);
-         
-
-            //var result = await _loanService.GetNumberOfActiveLoans(SSN);
-            //Assert.Equal(numberOfActiveLoans, result);
-
         }
+
+
     }
 }
