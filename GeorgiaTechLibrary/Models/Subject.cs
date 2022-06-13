@@ -5,7 +5,7 @@ namespace GeorgiaTechLibrary.Models
 {
     public partial class Subject
     {
-        public int SubjectId { get; set; }
+        public int Subject_id { get; set; }
         public string Name { get; set; } = null!;
 
     }

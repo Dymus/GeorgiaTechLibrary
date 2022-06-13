@@ -6,7 +6,7 @@ namespace GeorgiaTechLibrary.Repository
     {
         Task<IEnumerable<Book>> GetBooks();
         Task<Book> GetBook(string ISBN);
-        Task<Book> CreateBook(Book loan);
-        Book GetBookIncludeVolumes(string ISBN);
+        Task<Book> CreateBook(Book book);
+        //Task<Book> GetBookIncludeVolumes(string ISBN);
     }
 }

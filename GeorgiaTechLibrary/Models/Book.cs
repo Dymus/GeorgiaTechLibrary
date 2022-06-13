@@ -12,4 +12,12 @@ namespace GeorgiaTechLibrary.Models
         public ICollection<Author>? Authors { get; set; }
         public  ICollection<Subject>? Subjects { get; set; }
     }
+
+    public class BookDTO
+    {
+        public string ISBN { get; set; } = null!;
+        public string Title { get; set; } = null!;
+        public string? Description { get; set; }
+        public ICollection<VolumeDTO>? Volumes { get; set; }
+    }
 }

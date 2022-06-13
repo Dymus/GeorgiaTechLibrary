@@ -10,6 +10,15 @@ namespace GeorgiaTechLibrary.Business
         {
             _volumeRepository = volumeRepository;
         }
+        public async Task<IEnumerable<Volume>> CreateVolumes(List<VolumeDTO> volumes)
+        {
+            List<Volume> insertedVolumes = new List<Volume>();
+            foreach(VolumeDTO volume in volumes)
+            {
+                insertedVolumes.Add(await _volumeRepository.CreateVolume(volume));
+            }
+            return insertedVolumes;
+        }
 
         public Task<IEnumerable<Volume>> GetAllVolumes(string ISBN) => _volumeRepository.GetAllVolumes(ISBN);
         public Task<Volume> GetVolume(string volumeId) => _volumeRepository.GetVolume(volumeId);   

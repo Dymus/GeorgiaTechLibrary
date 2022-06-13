@@ -13,13 +13,23 @@ namespace GeorgiaTechLibrary.Repository
             _context = context;
         }
 
-        public async Task<Loan> CreateLoan(string SSN, string ISBN)
+        public async Task<Loan> CreateLoanSP(string SSN, string ISBN)
         {
-            var query = "EXEC CreateLoan @SSN', @ISBN";
+            var query = "EXEC CreateLoan @SSN, @ISBN";
             using (var connection = _context.CreateConnection())
             {
                 var results = await connection.QuerySingleAsync(query, new { SSN, ISBN });
                 return results;
+            }
+        }
+
+        public async Task<Loan> CreateLoan(LoanDTO loan)
+        {
+            var query = "INSERT INTO loan (ssn, is_returned, volume_id) OUTPUT inserted.loan_id, inserted.start_date_time, inserted.end_date_time, inserted.is_returned, inserted.volume_id VALUES (@SSN, 0, @volume_id)";
+            using (var connection = _context.CreateConnection())
+            {
+                var result = await connection.QuerySingleAsync<Loan>(query, new { loan.SSN, loan.volume_id });
+                return result;
             }
         }
 

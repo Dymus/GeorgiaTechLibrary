@@ -8,8 +8,9 @@ namespace GeorgiaTechLibrary.Models
     public class Loan
     {
         public int Loan_id { get; set; }
-        public DateTime Start_data_time { get; set; }
+        public DateTime Start_date_time { get; set; }
         public DateTime End_date_time { get; set; } 
+        public bool Is_returned { get; set; }
         public Volume Volume { get; set; } 
 
         public Member Member { get; set; }
@@ -18,10 +19,7 @@ namespace GeorgiaTechLibrary.Models
 
     public class LoanDTO
     {
-        public int Loan_id { get; set; }
-        public DateTime Start_data_time { get; set; }
-        public DateTime End_date_time { get; set; }
-        public int Volume_id { get; set; }
-        public int SSN { get; set; }
+        public string volume_id { get; set; }
+        public string SSN { get; set; }
     }
 }

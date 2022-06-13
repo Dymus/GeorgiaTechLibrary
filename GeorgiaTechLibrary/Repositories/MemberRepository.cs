@@ -33,7 +33,7 @@ namespace GeorgiaTechLibrary.Repository
 
         public async Task<Member> GetMember(string SSN)
         {
-            var query = "SELECT * FROM member m JOIN location l ON l.location_id=m.campus_location AND l.location_id=m.home_location JOIN library lib ON lib.library_id=m.library_id WHERE ssn = @SSN";
+            var query = "SELECT m.ssn, m.campus_location, l1.location_id, l1.post_code, l1.street, l1.street_num, m.home_location, l2.location_id, l2.post_code, l2.street, l2.street_num, lib.library_id, lib.name FROM member m JOIN location l1 ON l1.location_id=m.campus_location JOIN location l2 ON l2.location_id=m.home_location JOIN library lib ON lib.library_id=m.library_id WHERE ssn = @SSN";
 
              using (var connection = _context.CreateConnection())
             {
@@ -46,7 +46,7 @@ namespace GeorgiaTechLibrary.Repository
                 },
                 param: new { SSN },
                 splitOn: "campus_location,home_location,library_id");
-                return member.SingleOrDefault();
+                return member.Single();
             }
         }
 
@@ -55,16 +55,11 @@ namespace GeorgiaTechLibrary.Repository
             //check if location exists; create if not (x2)
             //check if library exists; create if not
 
-            var query = "INSERT INTO member VALUES (@SSN, @Campus_location, @Home_location, @Library)";
+            var query = "INSERT INTO member VALUES (@SSN, @Campus_location, @Home_location, @Library_id)";
 
             using (var connection = _context.CreateConnection())
             {
-                var dp = new DynamicParameters();
-                dp.Add("@SSN", member.SSN);
-                dp.Add("@Campus_location", member.Campus_location_id);
-                dp.Add("@Home_Location", member.Home_location_id);
-                dp.Add("@Library", member.Library_id);
-                var rowsAffected = await connection.ExecuteAsync(query, dp);
+                var rowsAffected = await connection.ExecuteAsync(query, member);
                 return rowsAffected;
             }
         }
@@ -76,6 +71,19 @@ namespace GeorgiaTechLibrary.Repository
             {
                 var result = await connection.QuerySingleAsync<int>(query, new { SSN });
                 if (result < 5) return true;
+                else return false;
+            }
+        }
+
+        public async Task<bool> MemberCanLoanSP(string SSN)
+        {
+            var procedureName = "CanMemberLoan";
+            var parameters = new DynamicParameters();
+            parameters.Add("SSN", SSN);
+            using (var connection = _context.CreateConnection())
+            {
+                var result = await connection.QuerySingleAsync<int>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                if (result == 1) return true;
                 else return false;
             }
         }

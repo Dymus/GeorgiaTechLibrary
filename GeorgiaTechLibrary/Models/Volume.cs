@@ -5,18 +5,17 @@ namespace GeorgiaTechLibrary.Models
 {
     public class Volume
     {
-        public int VolumeId { get; set; }
-        public string ISBN { get; set; } = null!;
-        public bool IsAvailable { get; set; }
-        public Library Library { get; set; }
+        public int Volume_id { get; set; }
+        public string Isbn { get; set; } = null!;
+        public bool Is_available { get; set; }
+        public Library? Library { get; set; }
 
     }
 
     public class VolumeDTO
     {
-        public int VolumeId { get; set; }
-        public string ISBN { get; set; } = null!;
-        public bool IsAvailable { get; set; }
-        public int LibraryId { get; set; }
+        public string Isbn { get; set; } = null!;
+        public bool Is_available { get; set; }
+        public int Library_id { get; set; }
     }
 }

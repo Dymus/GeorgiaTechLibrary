@@ -14,8 +14,26 @@ namespace GeorgiaTechLibrary.Controllers
             _volumeService = new VolumeService(volumeRepository);
         }
 
+        [HttpPost]
+        [Route("/api/[controller]/")]
+        [ProducesResponseType(typeof(Volume[]), StatusCodes.Status200OK)]
+        [Produces("application/json", "text/plain", "text/json")]
+        public async Task<ActionResult<IEnumerable<Volume>>> CreateVolumes([FromBody] List<VolumeDTO> volumes)
+        {
+            try
+            {
+                var createdVolumes = await _volumeService.CreateVolumes(volumes);
+                return Ok(createdVolumes);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
         [HttpGet]
-        [Route("/api/[controller]/GetAvailableList")]
+        [Route("/api/[controller]/GetAvailableVolumes")]
         [ProducesResponseType(typeof(Volume[]), StatusCodes.Status200OK)]
         [Produces("application/json", "text/plain", "text/json")]
         public async Task<IActionResult> GetAvailableVolumes(string ISBN)
@@ -49,7 +67,7 @@ namespace GeorgiaTechLibrary.Controllers
         }
 
         [HttpGet]
-        [Route("/api/[controller]/GetAvailable")]
+        [Route("/api/[controller]/GetAvailableVolume")]
         [ProducesResponseType(typeof(Volume), StatusCodes.Status200OK)]
         [Produces("application/json", "text/plain", "text/json")]
         public async Task<IActionResult> GetAvailableVolume(string ISBN)
@@ -64,5 +82,25 @@ namespace GeorgiaTechLibrary.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/GetAllVolumes")]
+        [ProducesResponseType(typeof(Volume[]), StatusCodes.Status200OK)]
+        [Produces("application/json", "text/plain", "text/json")]
+        public async Task<IActionResult> GetAllVolumes(string ISBN)
+        {
+            try
+            {
+                var volumes = await _volumeService.GetAllVolumes(ISBN);
+                return Ok(volumes);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
+
     }
 }

@@ -8,10 +8,14 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<ILoanRepository, LoanRepository>();
 builder.Services.AddScoped<ILibraryRepository, LibraryRepository>();
 builder.Services.AddScoped<IVolumeRepository, VolumeRepository>();
-//builder.Services.AddScoped<IBookRepository>, BookRepository>();
-
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+builder.Services.AddScoped<IBookAuthorRepository, BookAuthorRepository>();
+builder.Services.AddScoped<IBookSubjectRepository, BookSubjectRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
