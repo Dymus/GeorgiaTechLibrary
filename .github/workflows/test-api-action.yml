@@ -51,7 +51,7 @@ jobs:
         if: success() || failure()    # run this step even if previous step failed
         with:
           name: xUnit Tests           
-          path: './GeorgiaTechLibraryTests\TestResults\test-results.trx'    
+          path: './GeorgiaTechLibraryTests/TestResults/test-results.trx'    
           reporter: dotnet-trx        # Format of test results
       
       # #Install Node.js for Newman 
