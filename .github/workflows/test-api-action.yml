@@ -43,18 +43,29 @@ jobs:
       - name: Build solution
         run: dotnet build --configuration Release --no-restore
 
-      #Install Node.js for Newman 
-      - name: Install Node.js
-        uses: actions/setup-node@v1
+      - name: Test .NET solution (xUnit)
+        run: dotnet test --logger "trx;LogFileName=test-results.trx"
+
+      - name: Report .NET test results
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    # run this step even if previous step failed
         with:
-          node-version: '12.x'
+          name: xUnit Tests           
+          path: ''./GeorgiaTechLibraryTests\TestResults\test-results.trx'    
+          reporter: dotnet-trx        # Format of test results
       
-      # Install Postman collection runner (Newman)
-      - name: Install Newman
-        run: |
-          npm install -g newman
-          npm install -g newman-reporter-htmlextra
+      # #Install Node.js for Newman 
+      # - name: Install Node.js
+      #   uses: actions/setup-node@v1
+      #   with:
+      #     node-version: '12.x'
       
+      # # Install Postman collection runner (Newman)
+      # - name: Install Newman
+      #   run: |
+      #     npm install -g newman
+      #     npm install -g newman-reporter-htmlextra
+      #
       # # Run the Postman collection
       # - name: Run Postman collection
       #   run: |
@@ -66,6 +77,3 @@ jobs:
       #   with:
       #     name: RunReports
       #     path: testResults
-
-
-
