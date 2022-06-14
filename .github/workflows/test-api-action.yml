@@ -1,5 +1,5 @@
 #Name of the GitHub Action
-name: Postman push build
+name: xUnit Testing
 
 #Set the action on which the workflow will trigger
 on: push
