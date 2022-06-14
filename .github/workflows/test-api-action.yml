@@ -44,14 +44,14 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Test .NET solution (xUnit)
-        run: dotnet test --logger "trx;LogFileName=test-results.trx"
+        run: dotnet test --logger "trx;LogFileName=test-results1.trx"
 
       - name: Report .NET test results
         uses: dorny/test-reporter@v1
         if: success() || failure()    # run this step even if previous step failed
         with:
           name: xUnit Tests           
-          path: './GeorgiaTechLibraryTests/TestResults/test-results.trx'    
+          path: './GeorgiaTechLibraryTests/TestResults/test-results1.trx'    
           reporter: dotnet-trx        # Format of test results
       
       # #Install Node.js for Newman 
